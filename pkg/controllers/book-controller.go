@@ -9,6 +9,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/m0rk0vka/go-bookstore/pkg/models"
+	"github.com/m0rk0vka/go-bookstore/pkg/utils"
 )
 
 var NewBook models.Book
@@ -31,6 +32,16 @@ func GetBookById(w http.ResponseWriter, r *http.Request) {
 
 	bookDetails, _ := models.GetBookById(Id)
 	res, _ := json.Marshal(bookDetails)
+	w.Header().Set("Content-Type", "pkglication/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+}
+
+func CreateBook(w http.ResponseWriter, r *http.Request) {
+	CreateBook := &models.Book{}
+	utils.ParseBody(r, CreateBook)
+	b := CreateBook.CreateBook()
+	res, _ := json.Marshal(b)
 	w.Header().Set("Content-Type", "pkglication/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
